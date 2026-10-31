@@ -35,26 +35,27 @@ jobs:
           push: true
           tags: ${{ secrets.DOCKERHUB_USERNAME }}/devops-frontend:latest
 
-  deploy-validation:
-    name: Validate Kubernetes Deployments
+  deploy-to-kubernetes:
+    name: Deploy to Kubernetes
     needs: build-and-push
     runs-on: ubuntu-latest
     steps:
       - name: Checkout Source Code
         uses: actions/checkout@v4
 
-      - name: Set up Kubectl CLI
-        uses: azure/setup-kubectl@v3
-        with:
-          version: 'v1.30.0'
+      - name: Create KinD Cluster
+        uses: helm/kind-action@v1
 
-      - name: Validate All Kubernetes Manifests (Dry-Run & Linting)
+      - name: Deploy All Kubernetes Manifests
         run: |
-          echo "Validating Kubernetes manifests..."
-          kubectl apply -f k8s/00-namespace.yaml --dry-run=client
-          kubectl apply -f k8s/01-postgres.yaml --dry-run=client
-          kubectl apply -f k8s/02-backend.yaml --dry-run=client
-          kubectl apply -f k8s/03-frontend.yaml --dry-run=client
-          kubectl apply -f k8s/04-prometheus.yaml --dry-run=client
-          kubectl apply -f k8s/05-grafana.yaml --dry-run=client
-          echo "All Kubernetes production manifests passed validation."
+          echo "Deploying production stack to Kubernetes..."
+          kubectl apply -f k8s/00-namespace.yaml
+          kubectl apply -f k8s/01-postgres.yaml
+          kubectl apply -f k8s/02-backend.yaml
+          kubectl apply -f k8s/03-frontend.yaml
+          kubectl apply -f k8s/04-prometheus.yaml
+          kubectl apply -f k8s/05-grafana.yaml
+
+      - name: Verify Cluster Resources
+        run: |
+          kubectl get all -n production
