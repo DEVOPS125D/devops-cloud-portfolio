@@ -50,7 +50,7 @@ jobs:
 
       - name: Validate All Kubernetes Manifests (Dry-Run & Linting)
         run: |
-          echo "Validating Kubernetes manifests syntax and deployment integrity..."
+          echo "Validating Kubernetes manifests..."
           kubectl apply -f k8s/00-namespace.yaml --dry-run=client
           kubectl apply -f k8s/01-postgres.yaml --dry-run=client
           kubectl apply -f k8s/02-backend.yaml --dry-run=client
