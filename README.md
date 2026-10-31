@@ -44,4 +44,28 @@ A production-grade, containerized multi-tier cloud application featuring automat
 │                          ┌────────────────┐   │
 │                          │  Grafana Pod   │   │
 │                          └────────────────┘   │
-└───────────────────────────────────────────────┘
+└───────────────────────────────────────────────┘📸 Production Verification & Telemetry Gallery
+1. Automated CI/CD Pipeline (GitHub Actions & KinD)
+Automated multi-stage container builds, Docker Hub publishing, and rolling deployment verification on ephemeral Kubernetes clusters.
+
+2. Live Web Application & Database Persistence
+Microservices communication verified with PostgreSQL stateful storage and real-time record synchronization.
+
+3. Real-Time Telemetry & Monitoring (Grafana & Prometheus)
+Real-time container health probes, HTTP request rate metrics, and microservice uptime tracking.
+
+4. API Gateway & Cluster Orchestration
+Swagger OpenAPI schema validation and live Kubernetes namespace resource inspection.
+
+🛠️ Tech Stack & Tooling
+Application: FastAPI (Python), React.js (Vite), PostgreSQL 16.
+
+Containerization: Multi-stage Dockerfiles optimized for minimal footprint, custom Docker bridge networks.
+
+Orchestration: Kubernetes (Namespaces, PVCs, ConfigMaps, Secrets, Services, Deployments).
+
+Infrastructure as Code (IaC): Terraform templates for AWS modular VPC, subnets, route tables, and security groups.
+
+CI/CD Pipeline: GitHub Actions workflow building multi-arch Docker images, pushing to Docker Hub, and executing KinD deployment validation.
+
+Observability: Prometheus real-time metric scraping and custom Grafana visual telemetry dashboards.
