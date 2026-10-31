@@ -7,62 +7,45 @@
 ![Grafana](https://img.shields.io/badge/Grafana-Visualization-F46800?logo=grafana)
 ![Terraform](https://img.shields.io/badge/Terraform-IaC-7B42BC?logo=terraform)
 
-A production-grade, containerized multi-tier cloud application featuring automated CI/CD pipelines, container orchestration, persistent database storage, and full-stack telemetry monitoring.
+A production-grade, containerized multi-tier cloud application featuring automated CI/CD pipelines, Kubernetes container orchestration, persistent PostgreSQL storage, and full-stack telemetry monitoring.
 
----
+## What you will build
 
-## 🏛️ System Architecture
+| Project 1: Microservices Web App | Project 2: Grafana Live Telemetry | Project 3: OpenAPI Gateway |
+| :---: | :---: | :---: |
+| <img src="outputss/Screenshot%20(328).png" width="100%" /> | <img src="outputss/Screenshot%20(329).png" width="100%" /> | <img src="outputss/Screenshot%20(327).png" width="100%" /> |
+| React + Nginx frontend with real-time PostgreSQL database persistence | Real-time Grafana dashboard tracking pod status and HTTP traffic | FastAPI REST backend with automated Swagger OpenAPI documentation |
 
-```text
-[ Browser / Client ]
-         │
-         ▼ (Port 80 / 8085)
-┌───────────────────────────────────────────────┐
-│              Kubernetes Cluster               │
-│                                               │
-│   ┌───────────────────────────────────────┐   │
-│   │  Frontend Pod (React + Nginx Proxy)   │   │
-│   └───────────────────┬───────────────────┘   │
-│                       │                       │
-│                       ▼ (Internal DNS:8000)   │
-│   ┌───────────────────────────────────────┐   │
-│   │      Backend Pod (FastAPI Core)       │   │
-│   └───────────┬───────────────────────┬───┘   │
-│               │                       │       │
-│               ▼                       ▼       │
-│   ┌───────────────────────┐   ┌───────────┐   │
-│   │ PostgreSQL (Stateful) │   │ /metrics  │   │
-│   │ PersistentVolumeClaim │   │ Telemetry │   │
-│   └───────────────────────┘   └─────┬─────┘   │
-│                                     │         │
-│                                     ▼         │
-│                          ┌────────────────┐   │
-│                          │ Prometheus Pod │   │
-│                          └────────┬───────┘   │
-│                                   │           │
-│                                   ▼           │
-│                          ┌────────────────┐   │
-│                          │  Grafana Pod   │   │
-│                          └────────────────┘   │
-└───────────────────────────────────────────────┘
-📸 Production Verification & Telemetry Gallery
-1. Automated CI/CD Pipeline (GitHub Actions & KinD)
-Automated multi-stage container builds, Docker Hub publishing, and rolling deployment verification on ephemeral Kubernetes clusters.
-2. Live Web Application & Database Persistence
-Microservices communication verified with PostgreSQL stateful storage and real-time record synchronization.
-Web Application Dashboard	Database Operational State
-3. Real-Time Telemetry & Monitoring (Grafana & Prometheus)Real-time container health probes, HTTP request rate metrics, and microservice uptime tracking.Grafana Telemetry DashboardPrometheus   Target Monitoring
-4. API Gateway & Cluster OrchestrationSwagger OpenAPI schema validation and live Kubernetes namespace resource inspection.
-Swagger OpenAPI Documentation   Kubernetes Cluster Resources
-🛠️ Tech Stack & Tooling
-Application: FastAPI (Python), React.js (Vite), PostgreSQL 16.
+Project wires a GitHub Actions CI/CD pipeline to Docker Hub and Kubernetes, so every push builds and validates deployments automatically.
 
-Containerization: Multi-stage Dockerfiles optimized for minimal footprint, custom Docker bridge networks.
+## What you will see in the console
 
-Orchestration: Kubernetes (Namespaces, PVCs, ConfigMaps, Secrets, Services, Deployments).
+### 1. Automated GitHub Actions CI/CD Pipeline
+<img src="outputss/Screenshot%20(326).png" width="100%" />
 
-Infrastructure as Code (IaC): Terraform templates for AWS modular VPC, subnets, route tables, and security groups.
+### 2. Live Telemetry & Metric Scraping (Prometheus & Grafana)
 
-CI/CD Pipeline: GitHub Actions workflow building multi-arch Docker images, pushing to Docker Hub, and executing KinD deployment validation.
+| Prometheus Scrape Target (1/1 UP) | Time-Series HTTP Request Streams |
+| :---: | :---: |
+| <img src="outputss/Screenshot%20(331).png" width="100%" /> | <img src="outputss/Screenshot%20(330).png" width="100%" /> |
+| FastAPI `/metrics` endpoint running healthy in production | Live PromQL queries monitoring traffic spikes |
 
-Observability: Prometheus real-time metric scraping and custom Grafana visual telemetry dashboards.
+### 3. Production Kubernetes Cluster & Persistent Storage
+<img src="outputss/Screenshot%20(332).png" width="100%" />
+
+## 🛠️ Tech Stack & Tooling
+
+* **Application:** FastAPI (Python), React.js (Vite), PostgreSQL 16.
+* **Containerization:** Multi-stage Dockerfiles optimized for minimal footprint, custom Docker bridge networks.
+* **Orchestration:** Kubernetes (Namespaces, PVCs, ConfigMaps, Secrets, Services, Deployments).
+* **Infrastructure as Code (IaC):** Terraform templates for AWS modular VPC, subnets, route tables, and security groups.
+* **CI/CD Pipeline:** GitHub Actions workflow building Docker images, pushing to Docker Hub, and executing KinD deployment validation.
+* **Observability:** Prometheus real-time metric scraping and custom Grafana visual telemetry dashboards.
+
+## ⚡ Quickstart & Local Deployment
+
+1. **Local Orchestration:** `docker compose up -d`
+2. **Kubernetes Deployment:** `kubectl apply -f k8s/`
+3. **Frontend Access:** `kubectl port-forward -n production svc/frontend 8085:80`
+4. **Prometheus UI:** `kubectl port-forward -n production svc/prometheus 9090:9090`
+5. **Grafana Dashboard:** `kubectl port-forward -n production svc/grafana 3000:3000`
